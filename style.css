@@ -6,19 +6,19 @@ body {
 }
 
 
-#topdiv {
+#topMeny {
     background-color: rgb(205, 25, 28);
-    padding: 20px;
+    
+    
+    ;
+  
 }
 
 #prodhist {
     font-size: 22px;
-    padding-top: 20px;
 }
 
-#bj-ørn {
-    
-}
+
 
 #bjtekst {
     font-size: 100;
@@ -30,6 +30,11 @@ body {
 #EVport {
     font-size: 1px;
     
+}
+
+.toplink {
+  padding-left: 20px;
+  padding-bottom:px;
 }
 
 #prodlink {
@@ -53,3 +58,7 @@ body {
     color: black;
     text-align: center;
  }
+
+#form {
+    padding-bottom: 20px;
+}
