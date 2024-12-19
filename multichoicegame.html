@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Choice Text Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 600px;
+            margin: auto;
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .story {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .choices {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .choice-btn {
+            background-color: #6200ea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .choice-btn:hover {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="story" id="story">Læraren sier at du må åpne pc'en din og gjøre en powerapps oppgave, menn du vil ikke. Gjør du oppgaven eller skal du finne en måte og slippe?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="makeChoice('oppgave')">Gjør oppgaven</button>
+            <button class="choice-btn" onclick="makeChoice('skulk')">Skulk</button>
+        </div>
+    </div>
+
+    <script>
+        const storyElement = document.getElementById('story');
+
+        const gameData = {
+            start: {
+                text: "Læraren sier at du må åpne pc'en din og gjøre en powerapps oppgave, menn du vil ikke. Gjør du oppgaven eller skal du finne en måte og slippe?",
+                choices: {
+                    skulk: 'skulk1',
+                    oppgave: 'oppgaveend'
+                }
+            },
+
+            oppgaveend: {
+                text: "Du får ett mentalt sammenbrudd av powerapps og tar selvmord",
+                choices: {}
+            },
+
+           skulk1: {
+                text: "Du tar et viskelær og svelger det, fjeset ditt blir blått og du detter på gulvet. Du lander på magen og viskelære blir skutt ut av halsen din. Læraren spør om hann skal følge deg til helsesøster.",
+                choices: {
+                    Ja: 'lærerend',
+                    "Nei jeg går sjøl": 'sjøl'
+                }
+            },
+
+            lærerend: {
+                text: "Læreren følger deg til helsesøster, hunn sier at alt går bra og at du kan gå tilbake til timen, læraren følger deg tilbake til pulten din, du har mislykket, du greide ikke å rømme, du må bruke powerapps. Du åpner nettsiden og begynner, det går timer. Det er noe fundamentalt urovekkende ved å bruke PowerApps—en form for eksistensiell pine som synes å infiltrere både sinn og sjel, en sakte virkende gift som manifesterer seg i hver frustrerende feil, hver intuitive snarvei som ikke eksisterer, og hver time brukt på å få noe så banalt som en datainnsending til å fungere. Man begynner med håp, med den naive troen på at dette verktøyet, som tilsynelatende lover å demokratisere apputvikling, skal være en alliert. Men i stedet møter man en uendelig vegg av abstraksjoner som bare blir mer forvirrende jo mer man forsøker å forstå. Det er ikke bare tiden som forsvinner inn i dette digitale sort hullet, men også en del av ens selv. Hver bug, hver kryptisk feilmelding og hver overkompliserte løsning krever en bit av din mentale energi, en liten flik av det som gir livet ditt struktur og mening. Snart finner du deg selv sittende der, tom i blikket, stirrende på en halvdysfunksjonell app som skulle være så enkel å bygge, men som nå står som et monument over teknologiens evne til å påføre lidelse. Dette er ikke bare en teknisk utfordring; det er et speil for menneskets kamp mot kaoset og meningsløsheten i tilværelsen, der PowerApps står som en absurdistisk metafor for alt som ikke kan kontrolleres. Du greier ikke mer, du tar en pistol opp fra sekken din og putter en kule i hove ditt, endlig frihet fra powerapps, alt blir svart. Du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {}
+            },
+
+            sjøl: {
+                text: "Du forlater klasserommet og går mot helsesøster sitt kontor, du ser bak deg og ingen tegn til læraren. Det er tid for å rømme. Du går mot Ytterdøren men ser vaktmesteren som står med døren, skal du vente på toalletet til vaktmesteren går eller prøve å snike snike deg forbi?",
+                choices: {
+                    "Vent på toalette": 'venttoalett',
+                    "Snik forbi": 'snik1'
+                }
+            },
+
+            venttoalett: {
+                text: "Du venter på toallete og  en time senere  skjekker du døren, vaktmesteren er gått og du springer heim. Du slapp powerapps! Livet ditt er reddet!",
+                choices: {}
+            },
+
+            snik1: {
+                text: "Du legger deg på gulvet og kravler rundt hjørne og langs veggen til du kommer bak resepsjon disken, mens du kravler forbi kommer du borti stolen og den ruller og treffer veggen. ",
+                choices: {
+                    Løp: 'løp1',
+                    "Gjem deg": 'gjem1'
+                }
+            },
+
+            gjem1: {
+                text: "Du gjemmer deg under bordet, du hører vaktmesteren sniffse intenst, som et rådyr som har fått ferten av kjøtt. Du hører tunge steg og ser skyggen til vaktmestern over pulten. Jeg vet du er der, skulker sier hann.",
+                choices: {
+                    Løp: 'løp1',
+                    "Angrip": 'angrip1'
+                }
+            },
+
+            angrip1: {
+                text: "Du hopper opp og hiver viskelære i fjeset på vaktmesteren, du ser ned på disken og ser et glass vann og en mus, hva bruker du til våpen?",
+                choices: {
+                    Vann: 'vann',
+                    "Mus": 'mus'
+                }
+            },
+
+            vann: {
+                text: "Du hiver vann i fjeset på hann og springer rundt gjørne, fortsetter du langs gangen eller gjømmer du deg i et av skapene langs siden?",
+                choices: {
+                    Fortsett: 'fortsett1',
+                    "Skapet": 'skap1'
+                }
+            },
+
+            mus: {
+                text: "Du tar musen etter ledningen og pisker den mot hann, vaktmestern tar den i hånden sinn og river til, ledningen blir delt i to. Hann stirrer på deg med et blikk som en ulv som står over et skadd lam. Du løper rundt hjørne, fortsetter du langs gangen eller gjømmer du deg i skapet?",
+                choices: {
+                    Fortsett: 'fortsett1',
+                    "Skapet": 'skap1'
+                }
+            },
+    
+
+            løp1: {
+                text: "Du springer rundt hjørne, fortsetter du langs gangen eller gjømmer du deg i et av skapene langs veggen?",
+                choices: {
+                    Fortsett: 'fortsett1',
+                    "Skapet": 'skap1'
+                }
+            },
+
+            fortsett1: {
+                text: "Du springer langs gangen men du hører at vaktmestern tar deg igjen, du hører lyden av at han sprinter på alle fire",
+                choices: {
+                    "Løp fortere": 'løpfort',
+                    "Løp fortere": 'løpfort'
+                }
+            },
+
+            løpfort: {
+                text: "Vaktmesteren hopper oppå deg, du blir slengt i gulvet og hode ditt treffer den i 120 km/h hastighet, du dør før smertesignalene kommer til hjernen din, du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {}
+            },
+
+            skap1: {
+                text: "Du åpner døren til skapet og gjømmer deg inni, det er helt mørkt bortsett fra enn sprekk som lar deg se ut. Vaktmesteren løper på armer og bein som en vill hund forbi. SKULKER! skriker hann så munnen hans åpner stor nok til å svelge en fotball, lyden for det til å tåre i øynene. Venter du i skapet eller går du for døren?",
+                choices: {
+                    Skapet: 'skap2',
+                    "Døren": 'dør1'
+                }
+            },
+
+            skap2: {
+                text: "Du ser vaktmesteren spasere sakte forbi, øynene hans søker langs gangen som lyse til et fyrtårn, plutslig for hann øye på brannalarmen, han trykker på den og det viner i hele bygget, elever og lærere springer ut døren til hele bygget er tomt. Plutselig hører du vaktmesteren sin stemme over høytalerannleget Det har vert en brann i kantinen, alle gå heim for i dag. Nå er du aleine med vaktmesteren på skulen. Blir du i skapet eller går du ut?",
+                choices: {
+                    "Bli i skapet": 'bliskap',
+                    "Gå ut": 'forlatskap'
+                }
+            },
+
+            dør1: {
+                text: "Du åpner skapet og løper mot døren, håndtake er fryst, han har låst døren. Du hører noe komme i avstanden, sluntrene på fire bein. ",
+                choices: {
+                    "Gå tilbake til skapet": 'skap2',
+                    "Gjem deg under pulten": 'pult1'
+                }
+            },
+
+            pult1: {
+                text: "Du ser vaktmesteren spasere sakte forbi, øynene hans søker langs gangen som lyse til et fyrtårn, plutslig for hann øye på brannalarmen, han trykker på den og det viner i hele bygget, elever og lærere springer ut døren til hele bygget er tomt. ",
+                choices: {
+                    "Løp ut": 'løput',
+                    "Gå tilbake til skapet": 'skap3'
+                }
+            },
+
+            løput: {
+                text: "Du blir med de andre ut, vaktmesteren ber alle gå hjem for dagen på høytalerannleget, mens du går heim ser du vaktmesteren stå i døren, hele kroppen hans dirrer og munnen hans sikler som en hund, han glefser og du skvetter til, den skarpe bevegelsen var dråpen som fikk begere til å renne over og vaktmesteren mister det siste hann har av mennesklig kontrol, hann går på alle fire og hopper mot deg med et djevelsk bjeff, du havner på bakken mens han klorer og biter, lærerene greier å rive hann av deg, du reiser deg å trekker deg tilbake, 10 lærere holder vaktmesteren nede men hann river seg opp og går løs på dem. 5 lærere dø. Nå har brannvesenet kommet og en av dem spruter hann med brannslangen, hann blir slengt inn i elev mengden. 24 elever dø. Du løper hjem og ser på nyhettene at militæret har bombet skulen og jagd vaktmesteren ut i skogen. Militæret leter skogen i dager men finner hann aldri, du lever i konstant frykt om at hann vil komme (hann vil), du blir sendt på mentalsykehus på grunn av PTSD og paranoia, det er ikke lov med PC på cellen din så du slepper aldri å bruke powerapps igjen, :).",
+                choices: {}
+            },
+
+            skap3: {
+                text: "Du kommer deg tilbake til skapet og lukker døren bak deg. Plutselig hører du vaktmesteren sin stemme over høytalerannleget Det har vert en brann i kantinen, alle gå heim for i dag. Nå er du aleine med vaktmesteren på skulen. Blir du i skapet eller går du ut? hann øye på brannalarmen, han trykker på den og det viner i hele bygget, elever og lærere springer ut døren til hele bygget er tomt. ",
+                choices: {
+                    "Bli i skapet": 'bliskap',
+                    "Gå ut": 'forlatskap'
+                }
+            },
+
+            bliskap: {
+                text: "Vaktmesteren kommer til gangen og begnner og slå inn skapene, hann går fra skap til skap og knuser døren med neven sinn. Til slutt kommer hann til din dør og knuser den med deg inni, alt blir svart. Du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+
+                }
+            },
+
+            forlatskap: {
+                text: "Du ser en stige med siden av skapet, du tror du kan løsne en av platene i take og komme deg opp dit, tar du stigen eller går du og gjømmer deg på toallete?",
+                choices: {
+                    "Stige": 'stige1',
+                    "Toalette": 'toalet1'
+                }
+            },
+
+            toalet1toalet1: {
+                text: "Du går inn på toallete og setter deg i en av stallene, gjømmer du deg i en av stallene eller under vasken?",
+                choices: {
+                    Stallen: 'stall',
+                    "Vasken": 'vask'
+                }
+            },
+
+            toalet1: {
+                text: "Du går inn på toallete og setter deg i en av stallene, gjømmer du deg i en av stallene eller under vasken?",
+                choices: {
+                    Stallen: 'stall',
+                    "Vasken": 'vask'
+                }
+            },
+
+            
+            vask: {
+                text: "Når vaktmesteren kommer inn så ser hann deg med ein gang fordi vasken ikke er en god gjømeplass, hann dreper deg øyeblikklig. Du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+                }
+            },
+
+            stall: {
+                text: "Du gjømmer deg i stallen, samtidig hører du vaktmesteren komme inn. Hann slår opp den første stallen, løper du ut eller blir du i stallen?",
+                choices: {
+                    "Bli I stallen": 'bli1',
+                    "Løp ut": 'løp3'
+                }
+            },
+
+            løp3: {
+                text: "Du løper rett inn i vaktmesteren og han knekker nakken din du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+
+                }
+            },
+
+            bli1: {
+                text: "Hann fortsetter ned rekken av staller og slår op alle dørene, nå står han forann din, hva gjør du?",
+                choices: {
+                    "Bli I stallen": 'bli2',
+                    "Kryp under stallen til den hann har alerede åpnet.": 'kryp'
+                }
+            },
+
+           bli2: {
+                text: "Vaktmesteren åpner stallen, hann tar hove ditt og drunker deg i toallete du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+
+                }
+            },
+
+            kryp: {
+                text: "Du kryper under stallen til den hann alerede har åpnet og sniker deg ut av toallete mens han fortesetter og lete gjennom stallene. Går du for døren eller leter du etter en gjømmeplass?",
+                choices: {
+                    "Gå til døren": 'dør3',
+                    "Finn en gjømmeplass": 'gjøm1'
+                }
+            },
+
+            dør3: {
+                text: "Du går til døren uten å bli oppdaget, når du kommer deg ut springer du hjem og kommer aldri tilbake, du passerer ikke skulen og for deg aldri jobb som ender op med at du dør fattig på gaten, men du slapp powerapps! ",
+                choices: {
+
+                }
+            },
+
+            gjøm1: {
+                text: "Du ser en stige og du ser at ein av platene i taket er løse. Du tar stigen og setter den langs veggen, du klatrer opp og løsner platen og klatrer opp. Du greier akkuratt og dra stigen opp etter deg og legge tak platen på plass når du ser vaktmesteren gallopere forbi. Taket er rett over deg så du må kravle, du ser to veier, vilken tar du?",
+                choices: {
+                    Venstre: 'venstre1',
+                    Høyre: 'høyre1'
+                }
+            },
+
+            
+            stige1: {
+                text: "Du tar stigen og setter den langs veggen, du klatrer opp og løsner platen og klatrer opp. Du greier akkuratt og dra stigen opp etter deg og legge tak platen på plass når du ser vaktmesteren gallopere forbi. Taket er rett over deg så du må kravle, du ser to veier, vilken tar du?",
+                choices: {
+                    Venstre: 'venstre1',
+                    Høyre: 'høyre1'
+                }
+            },
+
+            høyre1: {
+                text: "Etter at du har kravlet litt kollapser taket under deg og du detter rett i fange på vaktmesteren, hann åpner munnen sin støre en en basketpall og spiser hove ditt. Du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+
+                }
+            },
+
+            venstre1: {
+                text: "Du kravler langs lofte, du hører vaktmesteren springe og slå opp dører under mens han skrier etter deg SKULKER SKULKER SKULKER Du ser ett vindu i taket, menn det har en hengelås på. Skal du knuse det med vindue eller gå tilbake å prøve å finne noe å dirke det opp med?",
+                choices: {
+                    Stige: 'stige2',
+                    "Gå tilbake og finn en dirk": 'dirk'
+                }
+            },
+
+            dirk: {
+                text: "Du finner en løs spiker og bruker den til å åpne låsen, du klatrer ut vinduet og kommer opp på taket, du begynner og skli og detter av taket, du lander på asvalten og ser tilbake til skulen. I vindu ser vaktmesteren på deg og springer ut døren bak hann. Du snur deg og springer ut på parkeringsplassen.",
+                choices: {
+                    "Gjem deg i en bil": 'bil1',
+                    "Løp hjem": 'hjem1'
+                }
+            },
+
+            bil1: {
+                text: "Du hopper in i førersete og ser at nøkkelen står i, du starter bilen og begynner og kjøre ut, samtidig ser du vaktmesteren komme ut gjennom døren, han springer mot bilen på alle fire.",
+                choices: {
+                    "Kjør vekk": 'vekk1',
+                    "Kjør over hann": 'overhan'
+                }
+            },
+
+            vekk1: {
+                text: "Du kjører vekk fra skulen, i speile ser du vaktmesteren springe etter deg, du akkselererer men han når deg igjen. Hann hopper opp på taket av bilen og knuser vinduet, han tar deg etter nakken og drar deg ut av bilen, du detter ned på veien mens du ser bilen kjøre vekk fra deg, hann hopper av og springer mot deg på alle fire, kroppen hans treffer deg i magen i cirka 126.192152523552km/h, du er dø, du blir sendt av taket og knekker nakken din, du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+                }
+            },
+
+            overhan: {
+                text: "Du kjører over vaktmesteren, kroppen hans blir knust under hjule og du går ut. Politiet kommer og arresterer deg får å ha drept vaktmesteren, du blir dømt til livs i fengsel men heldigvis er det ikke lov med pc i fengselet så du slipper powerapps.",
+                choices: {
+                }
+            },
+
+            hjem1: {
+                text: "Du løper vekk fra skulen, vaktmesteren tar deg igjen med en gang og tar tak i hovudet dit, han slenger deg rundt og nakken din blir knekt og du dør, du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+                }
+            },
+
+
+
+            stige2: {
+                text: "Du knuser vindue, øyeblikkelig hører du et skrik nedenifra og hører vaktmesteren som springer mot deg. Du klatret opp på take mens du hører vaktmesteren springe på lofte under deg, hann kommer opp og springer mot deg",
+                choices: {
+                    Løp: 'løp2',
+                    "Angrip": 'angrip2'
+                }
+            },
+
+            løp2: {
+                text: "Du løper vekk menn hann tar deg igjen med en gang og krasjer i deg, du blir sendt av taket og knekker nakken din, du drar til hellvete fordi du ikke trodde på Gud menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+                }
+            },
+
+            angrip2: {
+                text: "Du slår han i fjese når hann springer mot deg, hann ignorere det å slenger deg i bakken, han tar hendene sine på nakken din og kveler deg, alt blir svart. du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
+                choices: {
+                }
+            },
+
+            
+
+      
+
+        };
+
+        let currentNode = 'start';
+
+        function makeChoice(choice) {
+            const nextNode = gameData[currentNode].choices[choice];
+            if (nextNode) {
+                currentNode = nextNode;
+                updateStory();
+            } else {
+                alert("Invalid choice!");
+            }
+        }
+
+        function updateStory() {
+            const currentData = gameData[currentNode];
+            storyElement.textContent = currentData.text;
+            const choicesContainer = document.querySelector('.choices');
+            choicesContainer.innerHTML = '';
+
+            for (const [choice, next] of Object.entries(currentData.choices)) {
+                const button = document.createElement('button');
+                button.textContent = capitalizeFirstLetter(choice);
+                button.className = 'choice-btn';
+                button.onclick = () => makeChoice(choice);
+                choicesContainer.appendChild(button);
+            }
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    </script>
+</body>
+</html>
