@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +12,9 @@
             color: #f0f0f0;
             text-align: center;
             margin: 0;
-            padding: 20px;
+
         }
+
         .game-container {
             max-width: 600px;
             margin: auto;
@@ -21,15 +23,18 @@
             padding: 20px;
             background-color: #1e1e1e;
         }
+
         .story {
             font-size: 3em;
             margin-bottom: 20px;
         }
+
         .choices {
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
         }
+
         .choice-btn {
             background-color: #6200ea;
             color: #fff;
@@ -40,14 +45,33 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .choice-btn:hover {
             background-color: #3700b3;
         }
+
+        #topbar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            height: 70px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
+
 <body>
+
+    <div id="topbar">
+        <a href="index.html">
+            <img src="Bilder/Monogram Svart.png" alt="EV" width="65" id="monogram">
+        </a>
+
+    </div>
+
     <div class="game-container">
-        <div class="story" id="story">Læraren sier at du må åpne pc'en din og gjøre en powerapps oppgave, menn du vil ikke. Gjør du oppgaven eller skal du finne en måte og slippe?</div>
+        <div class="story" id="story">Læraren sier at du må åpne pc'en din og gjøre en powerapps oppgave, menn du vil
+            ikke. Gjør du oppgaven eller skal du finne en måte og slippe?</div>
         <div class="choices">
             <button class="choice-btn" onclick="makeChoice('oppgave')">Gjør oppgaven</button>
             <button class="choice-btn" onclick="makeChoice('skulk')">Skulk</button>
@@ -71,7 +95,7 @@
                 choices: {}
             },
 
-           skulk1: {
+            skulk1: {
                 text: "Du tar et viskelær og svelger det, fjeset ditt blir blått og du detter på gulvet. Du lander på magen og viskelære blir skutt ut av halsen din. Læraren spør om hann skal følge deg til helsesøster.",
                 choices: {
                     Ja: 'lærerend',
@@ -136,7 +160,7 @@
                     "Skapet": 'skap1'
                 }
             },
-    
+
 
             løp1: {
                 text: "Du springer rundt hjørne, fortsetter du langs gangen eller gjømmer du deg i et av skapene langs veggen?",
@@ -235,7 +259,7 @@
                 }
             },
 
-            
+
             vask: {
                 text: "Når vaktmesteren kommer inn så ser hann deg med ein gang fordi vasken ikke er en god gjømeplass, hann dreper deg øyeblikklig. Du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
                 choices: {
@@ -265,7 +289,7 @@
                 }
             },
 
-           bli2: {
+            bli2: {
                 text: "Vaktmesteren åpner stallen, hann tar hove ditt og drunker deg i toallete du drar til hellvete menn du slepper i vertfall powerapps, menn så kommer djevelen bort til deg med en laptop, han snur den rundt og på sjermen ser du den fryktskapene Ui'en til powerapps, du skriker for nåde menn det er for seint.",
                 choices: {
 
@@ -295,7 +319,7 @@
                 }
             },
 
-            
+
             stige1: {
                 text: "Du tar stigen og setter den langs veggen, du klatrer opp og løsner platen og klatrer opp. Du greier akkuratt og dra stigen opp etter deg og legge tak platen på plass når du ser vaktmesteren gallopere forbi. Taket er rett over deg så du må kravle, du ser to veier, vilken tar du?",
                 choices: {
@@ -375,9 +399,9 @@
                 }
             },
 
-            
 
-      
+
+
 
         };
 
@@ -413,4 +437,5 @@
         }
     </script>
 </body>
+
 </html>

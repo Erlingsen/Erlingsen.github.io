@@ -12,6 +12,6 @@ function typeWriter() {
 
 
 setTimeout(() => {
-    typeWriter()
-}, 1000); 
+  typeWriter()
+}, 1000);
 

@@ -1,72 +1,70 @@
-
-
-
 body {
-    font-family: 'Montserrat';
-    margin: 0;
+  font-family: 'Montserrat';
+  margin: 0;
 }
 
 
 #topMeny {
-    background-color: rgb(205, 25, 28);
-    display:flex;
-    align-items: center;
-    height: 70px;
-  
+  background-color: rgb(205, 25, 28);
+  display: flex;
+  align-items: center;
+  height: 70px;
+
 }
 
 #prodhist {
-    font-size: 22px;
-    padding-top: 50px;
+  font-size: 22px;
+  padding-top: 50px;
 }
 
 
 
 #bjtekst {
-    font-size: 100;
-    font-style: italic;
-    margin-top: 0;
-    padding-top: 0;
-    padding-bottom: 20px;
+  font-size: 100;
+  font-style: italic;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 20px;
 }
 
 #EVport {
-    font-size: 1px;
-    
+  font-size: 1px;
+
 }
 
 .toplink {
   padding-left: 20px;
-  padding-bottom:px;
+  padding-bottom: px;
   text-decoration: none;
 }
 
 #prodlink {
-    padding-right: 20px;
-    text-decoration: none;
+  padding-right: 20px;
+  text-decoration: none;
 }
 
 #proglink {
-    padding-right: 20px;
-    text-decoration: none;
+  padding-right: 20px;
+  text-decoration: none;
 }
 
 #teklink {
-    padding-right: 20px;
-    text-decoration: none;
+  padding-right: 20px;
+  text-decoration: none;
 }
 
 .footer {
-    text-align: center;
-    background-color:rgb(205, 25, 28);
-    color: black;
-    padding: 20px;
+  text-align: center;
+  background-color: rgb(205, 25, 28);
+  color: white;
+  padding: 20px;
+  font-size: 17px;
 
- }
+}
 
 #form {
-    padding-bottom: 65px;
-    padding-top: 1px;
+  padding-bottom: 65px;
+  padding-top: 1px;
 }
 
 
@@ -91,7 +89,7 @@ body {
 }
 
 .dropdown .dropbtn {
-  font-size: 16px;  
+  font-size: 16px;
   border: none;
   outline: none;
   color: white;
@@ -101,7 +99,8 @@ body {
   margin: 0;
 }
 
-.navbar a:hover, .dropdown:hover .dropbtn {
+.navbar a:hover,
+.dropdown:hover .dropbtn {
   background-color: red;
 }
 
@@ -110,7 +109,7 @@ body {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -132,9 +131,9 @@ body {
 }
 
 #kontaktmeg {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 #submitbutton {
-    margin-top: 10px;
+  margin-top: 10px;
 }
