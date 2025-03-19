@@ -124,3 +124,7 @@ body {
     margin-top: 100px;
   
   }
+
+  .mySlides {
+    display: none;
+}
