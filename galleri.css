@@ -128,3 +128,16 @@ body {
   .mySlides {
     display: none;
 }
+
+#video1 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    gap: 10px; /* Space between videos */
+    max-width: 800px; /* Adjust as needed */
+    margin: auto; /* Center align */
+}
+
+#video1 iframe {
+    width: 100%; /* Make sure all videos take full width */
+    aspect-ratio: 16 / 9; /* Ensures consistent height */
+}

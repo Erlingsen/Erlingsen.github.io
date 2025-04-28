@@ -96,7 +96,6 @@ body {
     color: white;
     padding: 14px 16px;
     background-color: inherit;
-    font-family: inherit;
     margin: 0;
   }
   
@@ -139,8 +138,3 @@ body {
     margin-top: 10px;
   }
 
-  #links {
-    padding-top: 20px;
-    padding-bottom: 400px;
-    margin-bottom: 50px;
-  }

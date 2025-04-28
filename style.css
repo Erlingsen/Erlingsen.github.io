@@ -9,6 +9,7 @@ body {
   display: flex;
   align-items: center;
   height: 70px;
+  margin-bottom: 20px;
 
 }
 
@@ -136,4 +137,10 @@ body {
 
 #submitbutton {
   margin-top: 10px;
+}
+
+#links {
+  padding-top: 20px;
+  padding-bottom: 400px;
+  margin-bottom: 50px;
 }
