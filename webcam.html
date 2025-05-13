@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Webcam Feed</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+      margin: 0;
+    }
+    video {
+      width: 80%;
+      max-width: 800px;
+      border: 4px solid #fff;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <video id="webcam" autoplay playsinline></video>
+
+  <script>
+    const video = document.getElementById('webcam');
+
+    async function enableWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        console.error("Webcam access denied or not available:", err);
+      }
+    }
+
+    enableWebcam();
+  </script>
+</body>
+</html>
