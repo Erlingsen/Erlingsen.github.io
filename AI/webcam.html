@@ -3,44 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hand Landmarks Flipped</title>
-   <link rel="stylesheet" href="AI_styles.css" />
+  <title>Finger Up/Down Binary</title>
+  <link rel="stylesheet" href="AI_styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    #container {
-      position: relative;
-      width: 640px;
-      height: 480px;
-      background: black;
-    }
-    video, canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 640px;
-      height: 480px;
-    }
-  </style>
+ 
 </head>
 <body>
   <div id="container">
     <video class="input_video" autoplay playsinline muted></video>
     <canvas class="output_canvas"></canvas>
+    <div id="binary-display">Binary: 00000</div>
   </div>
 
   <script>
     const videoElement = document.querySelector('.input_video');
     const canvasElement = document.querySelector('.output_canvas');
     const canvasCtx = canvasElement.getContext('2d');
+    const binaryDisplay = document.getElementById('binary-display');
 
     const HAND_CONNECTIONS = [
       [0,1],[1,2],[2,3],[3,4],
@@ -55,15 +35,15 @@
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-      // Endre denne funksjonen seinere. Den er ikkje så bra
       canvasCtx.translate(canvasElement.width, 0);
       canvasCtx.scale(-1, 1);
-
       canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+      let binaryString = '';
 
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach(landmarks => {
-          // Koble sammen håndlandemerker
+          // Tegner håndlandemerker
           canvasCtx.strokeStyle = 'lime';
           canvasCtx.lineWidth = 2;
           HAND_CONNECTIONS.forEach(pair => {
@@ -75,7 +55,19 @@
             canvasCtx.stroke();
           });
 
-          // Landmarks
+          // Sjekker fingrene opp/ned
+          const thumbUp = landmarks[4].y < landmarks[2].y ? 1 : 0;
+          const indexUp = landmarks[8].y < landmarks[6].y ? 1 : 0;
+          const middleUp = landmarks[12].y < landmarks[10].y ? 1 : 0;
+          const ringUp = landmarks[16].y < landmarks[14].y ? 1 : 0;
+          const pinkyUp = landmarks[20].y < landmarks[18].y ? 1 : 0;
+
+          binaryString = `${thumbUp}${indexUp}${middleUp}${ringUp}${pinkyUp}`;
+
+          // Oppdater binær
+          binaryDisplay.textContent = `Binary: ${binaryString}`;
+
+          // Landmerker
           landmarks.forEach(landmark => {
             const x = landmark.x * canvasElement.width;
             const y = landmark.y * canvasElement.height;

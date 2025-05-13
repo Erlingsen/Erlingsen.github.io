@@ -1,27 +1,29 @@
 body {
-  margin: 0;
-  background: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+margin: 0;
+background: #111;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+flex-direction: column;
 }
-
 #container {
-  position: relative;
-  width: 640px;
-  height: 480px;
-  background: black;
+position: relative;
+width: 640px;
+height: 480px;
+background: black;
 }
-
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 640px;
-  height: 480px;
+video, canvas {
+position: absolute;
+top: 0;
+left: 0;
+width: 640px;
+height: 480px;
 }
-
-video {
-  transform: scaleX(-1);
-}
+#binary-display {
+position: absolute;
+top: 10px;
+left: 10px;
+color: lime;
+font-size: 24px;
+    }
