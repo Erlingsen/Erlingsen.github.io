@@ -1,29 +1,39 @@
 body {
-margin: 0;
-background: #111;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-flex-direction: column;
+  margin: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
+
 #container {
-position: relative;
-width: 640px;
-height: 480px;
-background: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90vw;        /* Relative to viewport width */
+  height: 67.5vw;     /* 4:3 aspect ratio */
+  max-width: 1280px;  /* Optional max size */
+  max-height: 960px;  /* Optional max height */
+  transform: translate(-50%, -50%);
+  background: black;
 }
+
 video, canvas {
-position: absolute;
-top: 0;
-left: 0;
-width: 640px;
-height: 480px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
+
 #binary-display {
-position: absolute;
-top: 10px;
-left: 10px;
-color: lime;
-font-size: 24px;
-    }
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: lime;
+  font-size: 24px;
+  z-index: 10;
+}
