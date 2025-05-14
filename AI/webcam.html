@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="AI_styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
- 
 </head>
 <body>
   <div id="container">
@@ -56,7 +55,7 @@
           });
 
           // Sjekker fingrene opp/ned
-         const thumbUp = Math.abs(landmarks[4].x - landmarks[0].x) > 0.1 ? 1 : 0; 
+          const thumbUp = Math.abs(landmarks[4].x - landmarks[0].x) > 0.1 ? 1 : 0; 
           const indexUp = landmarks[8].y < landmarks[6].y ? 1 : 0;
           const middleUp = landmarks[12].y < landmarks[10].y ? 1 : 0;
           const ringUp = landmarks[16].y < landmarks[14].y ? 1 : 0;
