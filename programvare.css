@@ -1,6 +1,7 @@
 body {
     font-family: 'Montserrat';
     margin: 0;
+    color: white;
 }
 
 
@@ -156,18 +157,43 @@ body {
     padding: 30px;
 }
 
-.programlink {
-    text-decoration: none;
-    color: black;
-    background-color: rgb(205, 25, 28);
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 10px;
-}
-
 html, body {
   height: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
+  color: white;
 }
+
+.programlink {
+    text-decoration: none;
+    color: white;
+    background-color: rgb(205, 25, 28);
+    padding: 11px 16.5px;          /* 10% larger padding */
+    margin: 10px auto;
+    border-radius: 10px;
+    font-size: 18px;               /* 10% larger font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;       /* center content horizontally */
+    width: 275px;                  /* 10% larger width (previously 250px) */
+    box-sizing: border-box;
+    text-align: center;            /* center text if it wraps */
+}
+
+
+
+
+
+
+
+.downloadimage {
+    width: 22px;                   /* 10% larger width (previously 20px) */
+    height: 22px;                  /* 10% larger height (previously 20px) */
+    margin-left: 10px;
+}
+
+
+
+
+
