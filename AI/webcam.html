@@ -12,14 +12,16 @@
   <div id="container">
     <video class="input_video" autoplay playsinline muted></video>
     <canvas class="output_canvas"></canvas>
-    <div id="binary-display">Binary: 00000</div>
+    <div id="left-binary-display">Left Hand: Binary: 00000</div>
+    <div id="right-binary-display">Right Hand: Binary: 00000</div>
   </div>
 
   <script>
     const videoElement = document.querySelector('.input_video');
     const canvasElement = document.querySelector('.output_canvas');
     const canvasCtx = canvasElement.getContext('2d');
-    const binaryDisplay = document.getElementById('binary-display');
+    const leftBinaryDisplay = document.getElementById('left-binary-display');
+    const rightBinaryDisplay = document.getElementById('right-binary-display');
 
     const HAND_CONNECTIONS = [
       [0,1],[1,2],[2,3],[3,4],
@@ -38,11 +40,12 @@
       canvasCtx.scale(-1, 1);
       canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-      let binaryString = '';
+      let leftBinaryValue = 0;
+      let rightBinaryValue = 0;
 
       if (results.multiHandLandmarks) {
-        results.multiHandLandmarks.forEach(landmarks => {
-          // Tegner håndlandemerker
+        results.multiHandLandmarks.forEach((landmarks, index) => {
+          // Tegner håndlandmerker
           canvasCtx.strokeStyle = 'lime';
           canvasCtx.lineWidth = 2;
           HAND_CONNECTIONS.forEach(pair => {
@@ -54,19 +57,27 @@
             canvasCtx.stroke();
           });
 
-          // Sjekker fingrene opp/ned
-          const thumbUp = Math.abs(landmarks[4].x - landmarks[0].x) > 0.1 ? 1 : 0; 
+          // Verdi til kvar finger
+          const thumbUp = Math.abs(landmarks[4].x - landmarks[0].x) > 0.1 ? 1 : 0;
           const indexUp = landmarks[8].y < landmarks[6].y ? 1 : 0;
           const middleUp = landmarks[12].y < landmarks[10].y ? 1 : 0;
           const ringUp = landmarks[16].y < landmarks[14].y ? 1 : 0;
           const pinkyUp = landmarks[20].y < landmarks[18].y ? 1 : 0;
 
-          binaryString = `${thumbUp}${indexUp}${middleUp}${ringUp}${pinkyUp}`;
+          const binaryValue = (thumbUp * 1) + (indexUp * 2) + (middleUp * 4) + (ringUp * 8) + (pinkyUp * 16);
 
-          // Oppdater binær
-          binaryDisplay.textContent = `Binary: ${binaryString}`;
+          const wristX = landmarks[0].x;
+          const canvasCenterX = 0.5;
 
-          // Landmerker
+          if (wristX > canvasCenterX) {
+            // Høgre flippa til venstre
+            leftBinaryValue = binaryValue;
+          } else {
+            // Venstre flippa til høyre
+            rightBinaryValue = binaryValue;
+          }
+
+          // Tegner håndlandmerker
           landmarks.forEach(landmark => {
             const x = landmark.x * canvasElement.width;
             const y = landmark.y * canvasElement.height;
@@ -78,6 +89,10 @@
         });
       }
 
+      // Oppdaterer binære verdier
+      leftBinaryDisplay.textContent = `Left Hand: Value: ${leftBinaryValue}`;
+      rightBinaryDisplay.textContent = `Right Hand: Value: ${rightBinaryValue}`;
+
       canvasCtx.restore();
     }
 
@@ -86,7 +101,7 @@
     });
 
     hands.setOptions({
-      maxNumHands: 1,
+      maxNumHands: 2,
       modelComplexity: 1,
       minDetectionConfidence: 0.7,
       minTrackingConfidence: 0.7

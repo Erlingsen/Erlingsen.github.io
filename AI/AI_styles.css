@@ -12,8 +12,8 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1400px;
-  height: 1050px;
+  width: 800px;
+  height: 600px;
   transform: translate(-50%, -50%);
   background: black;
 }
@@ -34,4 +34,26 @@ video, canvas {
   color: lime;
   font-size: 24px;
   z-index: 10;
+}
+
+#left-binary-display,
+#right-binary-display {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  color: lime;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#left-binary-display {
+  top: -3%;
+  left: -0px;
+  transform: translateY(-50%);
+}
+
+#right-binary-display {
+  top: -3%;
+  right: -0px; 
+  transform: translateY(-50%);
 }
