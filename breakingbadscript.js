@@ -4,9 +4,9 @@ async function getQuote() {
 
     // Map of authors to image URLs
     const authorImages = {
-        "Walter White": "https://sdmntprukwest.oaiusercontent.com/files/00000000-431c-6243-98f4-ea451b371d2d/raw?se=2025-05-14T10%3A50%3A00Z&sp=r&sv=2024-08-04&sr=b&scid=00000000-0000-0000-0000-000000000000&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-14T08%3A02%3A02Z&ske=2025-05-15T08%3A02%3A02Z&sks=b&skv=2024-08-04&sig=K%2B24QHlNUCABMJjg5BkxJ9RGBFlmrT0ZiDsAOHbdSQg%3D",
-        "Jesse Pinkman": "https://sdmntprukwest.oaiusercontent.com/files/00000000-431c-6243-98f4-ea451b371d2d/raw?se=2025-05-14T10%3A50%3A00Z&sp=r&sv=2024-08-04&sr=b&scid=00000000-0000-0000-0000-000000000000&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-14T08%3A02%3A02Z&ske=2025-05-15T08%3A02%3A02Z&sks=b&skv=2024-08-04&sig=K%2B24QHlNUCABMJjg5BkxJ9RGBFlmrT0ZiDsAOHbdSQg%3D",
-        "Saul Goodman": "https://sdmntprnortheu.oaiusercontent.com/files/00000000-eb6c-61f4-a89b-697d890f563b/raw?se=2025-05-14T11%3A44%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=00000000-0000-0000-0000-000000000000&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-14T05%3A50%3A47Z&ske=2025-05-15T05%3A50%3A47Z&sks=b&skv=2024-08-04&sig=QKSn%2B5JKdDarynuKOAfYyr8rQbHf%2Bg45z4rYrkw5WNo%3D",
+        "Walter White": "Bilder\walterandjesse.png",
+        "Jesse Pinkman": "Bilder\walterandjesse.png",
+        "Saul Goodman": "Bilder\saul.png",
         "Badger": "https://tse1.mm.bing.net/th/id/OIP.Q844a1jMFZU7ki2UZdbSxQHaHR?cb=iwc2&pid=ImgDet&w=474&h=465&rs=1",
         "Hank Schrader": "https://tse4.mm.bing.net/th/id/OIP.6Kl3ZO_IArZK535cta4XgAHaEG?cb=iwc2&rs=1&pid=ImgDetMain",
         "Mike Ehrmantraut": "https://ih1.redbubble.net/image.3607322372.0838/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg",
