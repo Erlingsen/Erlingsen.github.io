@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blog Page</title>
+  <link rel="stylesheet" href="blogstyle.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Public Blog</h1>
+    <form id="postForm">
+      <input type="text" id="username" placeholder="Your name" required />
+      <textarea id="content" placeholder="Write a post..." required></textarea>
+      <input type="file" id="image" accept="image/*" />
+      <button type="submit">Post</button>
+    </form>
+    <div id="posts"></div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-storage-compat.js"></script>
+
+  <!-- Firebase Config and Initialization -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCIHpIH4oSl_SiaiNjUkU9J351ZTJc4ZAU",
+      authDomain: "blog-51244.firebaseapp.com",
+      projectId: "blog-51244",
+      storageBucket: "blog-51244.appspot.com",
+      messagingSenderId: "385685854315",
+      appId: "1:385685854315:web:013289df3b24044790b92e",
+      measurementId: "G-FC1D684MJV"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+  </script>
+
+  <!-- App Logic -->
+  <script src="blog.js"></script>
+</body>
+</html>
