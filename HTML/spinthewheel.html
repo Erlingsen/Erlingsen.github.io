@@ -1,40 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/spinthewheel.css">
-    <title>Spin the Wheel</title>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <title>Spin the Wheel</title>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
-    
-    <style>
-        body { text-align: center;  }
-        .wheel-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
-        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 5px solid black; position: absolute; transition: transform 3s ease-out; }
-        .pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid red;
-            z-index: 10;
-        }
-        button { margin-top: 20px; padding: 10px; cursor: pointer; }
-    </style>
+
+  <style>
+    body {
+      text-align: center;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid black;
+      position: absolute;
+      transition: transform 3s ease-out;
+    }
+
+    .pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid red;
+      z-index: 10;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>
-    <div id="topMeny">
 
-        <a href="index.html">
-          <img src="../Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
-        </a>
-    
-     <div class="dropdown">
+<body>
+  <div id="topMeny">
+
+    <a href="index.html">
+      <img src="../Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
+    </a>
+
+    <div class="dropdown">
       <button class="dropbtn">Produksjon og historiefortelling
         <i class="fa fa-caret-down"></i>
       </button>
@@ -78,22 +102,71 @@
         <a href="utpkit.html">UTP starter kit</a>
       </div>
     </div>
-    
-    
-    
-    
-      </div>
-    <h1>Spin the Wheel</h1>
-    <input type="text" id="entries" placeholder="Enter comma-separated values">
-    <button onclick="setupWheel()">Set Wheel</button>
-    <div class="wheel-container">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="300" height="300"></canvas>
-    </div>
-    <button onclick="spinWheel()">Spin</button>
-    <p id="result"></p>
-    <img src="../Bilder/wheel.png" alt="Wheel">
 
-    <script src="../JavaScript/spinthewheel.js"></script>
+
+
+
+  </div>
+  <h1>Spin the Wheel</h1>
+  <input type="text" id="entries" placeholder="Enter comma-separated values">
+  <button onclick="setupWheel()">Set Wheel</button>
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+  </div>
+  <button onclick="spinWheel()">Spin</button>
+  <p id="result"></p>
+
+    <script>
+        let entries = [];
+        let wheelCanvas = document.getElementById('wheelCanvas');
+        let ctx = wheelCanvas.getContext('2d');
+        let angle = 0;
+        let spinning = false;
+
+        function setupWheel() {
+            let input = document.getElementById('entries').value;
+            entries = input.split(',').map(e => e.trim());
+            drawWheel();
+        }
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+            let numEntries = entries.length;
+            let arcSize = (2 * Math.PI) / numEntries;
+            
+            for (let i = 0; i < numEntries; i++) {
+                ctx.beginPath();
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 150, i * arcSize, (i + 1) * arcSize);
+                ctx.fillStyle = `hsl(${(i * 360) / numEntries}, 100%, 50%)`;
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.save();
+                ctx.translate(150, 150);
+                ctx.rotate(i * arcSize + arcSize / 2);
+                ctx.fillStyle = 'white';
+                ctx.font = '16px Arial';
+                ctx.fillText(entries[i], 50, 10);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (spinning || entries.length === 0) return;
+            spinning = true;
+            let randomSpin = Math.floor(2000 + Math.random() * 2000);
+            angle += randomSpin;
+            wheelCanvas.style.transition = 'transform 3s ease-out';
+            wheelCanvas.style.transform = `rotate(${angle}deg)`;
+            setTimeout(() => {
+                let selectedIndex = Math.floor((angle % 360) / (360 / entries.length));
+                document.getElementById('result').innerText = `Result: ${entries[selectedIndex]}`;
+                spinning = false;
+            }, 3000);
+        }
+    </script>
 </body>
+
 </html>
