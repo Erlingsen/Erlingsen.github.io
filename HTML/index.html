@@ -4,18 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Spill</title>
-  <link rel="stylesheet" href="memorygame.css">
+  <title>Min portefølje</title>
+  <link rel="stylesheet" href="../CSS/style.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-
+  <link rel="icon" href="../Bilder/Monogramsvart.png" id="dynamisk-favicon" type="image/png" />
+  <script src="../JavaScript/favicon.js" defer></script>
 </head>
 
 <body>
+  <!--test-->
   <div id="topMeny">
 
-    <a href="index.html">
-      <img src="Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
-    </a>
+    <img src="../Bilder/GullMonogram2.png" alt="EV" width="65">
 
     <div class="dropdown">
       <button class="dropbtn">Produksjon og historiefortelling
@@ -61,20 +61,38 @@
         <a href="utpkit.html">UTP starter kit</a>
       </div>
     </div>
-
-
-
-
   </div>
-  <h1>Memory Spill</h1>
-  <div id="score-board">
-    ⏱ Tid: <span id="timer">0</span>s |
-    🏆 Beste tid: <span id="high-score">--</span>s
-  </div>
-  <div id="game-board"></div>
-  <button id="reset-button">Restart</button>
 
-  <script src="memory.js"></script>
+  <div id="prodhist">
+    <img id="bj-ørn" src="../Bilder/bj-ørn.png" alt="EV" width="700">
+  </div>
+
+  <p id="bjtekst">Bj-ørn, av Erling Vaage.</p>
+
+  <form action="" id="form">
+    <p id="kontaktmeg">Kontakt meg</p>
+    <label for="fornavn">Fornavn </label> <br>
+    <input type="text" id="fornavn" name="fornavn"><br>
+
+    <label for="etternavn">Etternavn </label> <br>
+    <input type="text" id="etternavn" name="etternavn"><br>
+
+    <label for="epost">Epost </label> <br>
+    <input type="email" id="epost" name="epost"><br>
+
+    <label for="tlf">Telefon </label> <br>
+    <input type="tel" id="tlf" name="tlf"><br>
+
+    <label for="meld">Melding </label> <br>
+    <input type="text" id="meld" name="tlf"><br>
+
+    <input type="submit" value="Submit" id="submitbutton">
+  </form>
+
+  <div class="footer">
+    <p>© 2025 Erling Vaage AS</p>
+  </div>
+
 </body>
 
 </html>

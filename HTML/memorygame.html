@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="tekprosjekter.css">
+  <title>Memory Spill</title>
+  <link rel="stylesheet" href="../CSS/memorygame.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+
 </head>
 
 <body>
-
   <div id="topMeny">
+
     <a href="index.html">
-      <img src="Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
+      <img src="../Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
     </a>
 
     <div class="dropdown">
@@ -60,37 +61,22 @@
         <a href="utpkit.html">UTP starter kit</a>
       </div>
     </div>
-  </div>
-  <div id="bildegalleri">
-    <div id="bilder1">
-      <img class="bilderclass" src="Bilder/ruter1.png" alt="feil" width="1000">
-      <p class="underskrift">Bj-ørn av Erling Vaage</p>
-      <img class="bilderclass" src="Bilder/asset (1).PNG" alt="feil" width="300">
-      <p class="underskrift">Julebilde av Erling Vaage</p>
-      <img class="bilderclass" src="Bilder/Test nettverk.drawio.png" alt="feil" width="1000">
-      <p class="underskrift">Pang! av Erling Vaage</p>
-      <img class="bilderclass" src="Bilder/nettverk1.png" alt="feil" width="1000">
-      <p class="underskrift">Star Wars bok av Erling Vaage</p>
-      <img class="bilderclass" src="Bilder/komfoss.png" alt="feil" width="500">
-      <p class="underskrift">Historie bøker av Erling Vaage</p>
-      <img class="bilderclass" src="Bilder/VGSfag.png" alt="feil" width="500">
-      <p class="underskrift">Historie bøker av Erling Vaage</p>
-      <img class="bilderclass" id="tallimage" src="Bilder/Screenshot_8.png" alt="feil" width="500">
-      <p class="underskrift">Historie bøker av Erling Vaage</p>
-    </div>
-  </div>
 
-  <div class="footer">
-    <p>© 2025 Erling Vaage AS</p>
-  </div>
 
-  <!-- Fullscreen image overlay -->
-  <div id="overlay" class="overlay">
-    <img src="" alt="Fullsize image">
-  </div>
 
-  <!-- External JavaScript file -->
-  <script src="bildeklikk.js"></script>
+
+  </div>
+  <h1>Memory Spill</h1>
+  <div id="score-board">
+    ⏱ Tid: <span id="timer">0</span>s |
+    🏆 Beste tid: <span id="high-score">--</span>s
+  </div>
+  <div id="game-board"></div>
+  <button id="reset-button">Restart</button>
+  <img src="../Bilder/memorycard1.png" alt="Memory Card 1">
+  <img src="../Bilder/memorycard2.png" alt="Memory Card 2">
+
+  <script src="../JavaScript/memorygame.js"></script>
 </body>
 
 </html>

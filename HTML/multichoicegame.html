@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/multichoicegame.css">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <title>Two-Choice Text Game</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+
+        }
+
+        .game-container {
+            max-width: 600px;
+            margin: auto;
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #db0000;
+        }
+
+        .story {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .choice-btn {
+            background-color: #6200ea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .choice-btn:hover {
+            background-color: #3700b3;
+        }
+
+        #topbar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            height: 70px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="topMeny">
+
+        <a href="index.html">
+          <img src="../Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
+        </a>
+    
+          <div class="dropdown">
+      <button class="dropbtn">Produksjon og historiefortelling
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="galleri.html">Galleri</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Konseptutvikling og programmering
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="datakomponentar.html">Datakomponentar</a>
+        <a href="multichoicegame.html">Skule spill</a>
+        <a href="spinthewheel.html">Spin the wheel</a>
+        <a href="memorygame.html">Memory game</a>
+        <a href="programvare.html">Programvare</a>
+        <a href="AI/webcam.html">Webcam</a>
+        <a href="breakingbad.html">Breaking Bad sitater</a>
+        <a href="blog.html">Blog</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Teknologiforståelse
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="datakomponentar.html">Datakomponentar</a>
+        <a href="tekprosjekter.html">Prosjekter</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">UTP
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="UTPrekkefølge.html">UTP kabel rekkefølge</a>
+        <a href="utpkit.html">UTP starter kit</a>
+      </div>
+    </div>
+    
+    
+    
+    
+      </div>
+
+    <div class="game-container">
+        <div class="story" id="story">Læraren sier at du må åpne pc'en din og gjøre en powerapps oppgave, menn du vil
+            ikke. Gjør du oppgaven eller skal du finne en måte og slippe?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="makeChoice('oppgave')">Gjør oppgaven</button>
+            <button class="choice-btn" onclick="makeChoice('skulk')">Skulk</button>
+        </div>
+    </div>
+    <img src="../Bilder/multichoice1.png" alt="Multi Choice 1">
+    <script src="../JavaScript/multichoicegame.js"></script>
+</body>
+
+</html>

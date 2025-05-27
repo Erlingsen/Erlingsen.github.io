@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../CSS/spinthewheel.css">
     <title>Spin the Wheel</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
@@ -31,7 +31,7 @@
     <div id="topMeny">
 
         <a href="index.html">
-            <img src="Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
+          <img src="../Bilder/GullMonogram2.png" alt="EV" width="65" id="monogram">
         </a>
     
      <div class="dropdown">
@@ -92,56 +92,8 @@
     </div>
     <button onclick="spinWheel()">Spin</button>
     <p id="result"></p>
+    <img src="../Bilder/wheel.png" alt="Wheel">
 
-    <script>
-        let entries = [];
-        let wheelCanvas = document.getElementById('wheelCanvas');
-        let ctx = wheelCanvas.getContext('2d');
-        let angle = 0;
-        let spinning = false;
-
-        function setupWheel() {
-            let input = document.getElementById('entries').value;
-            entries = input.split(',').map(e => e.trim());
-            drawWheel();
-        }
-
-        function drawWheel() {
-            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-            let numEntries = entries.length;
-            let arcSize = (2 * Math.PI) / numEntries;
-            
-            for (let i = 0; i < numEntries; i++) {
-                ctx.beginPath();
-                ctx.moveTo(150, 150);
-                ctx.arc(150, 150, 150, i * arcSize, (i + 1) * arcSize);
-                ctx.fillStyle = `hsl(${(i * 360) / numEntries}, 100%, 50%)`;
-                ctx.fill();
-                ctx.stroke();
-                
-                ctx.save();
-                ctx.translate(150, 150);
-                ctx.rotate(i * arcSize + arcSize / 2);
-                ctx.fillStyle = 'white';
-                ctx.font = '16px Arial';
-                ctx.fillText(entries[i], 50, 10);
-                ctx.restore();
-            }
-        }
-
-        function spinWheel() {
-            if (spinning || entries.length === 0) return;
-            spinning = true;
-            let randomSpin = Math.floor(2000 + Math.random() * 2000);
-            angle += randomSpin;
-            wheelCanvas.style.transition = 'transform 3s ease-out';
-            wheelCanvas.style.transform = `rotate(${angle}deg)`;
-            setTimeout(() => {
-                let selectedIndex = Math.floor((angle % 360) / (360 / entries.length));
-                document.getElementById('result').innerText = `Result: ${entries[selectedIndex]}`;
-                spinning = false;
-            }, 3000);
-        }
-    </script>
+    <script src="../JavaScript/spinthewheel.js"></script>
 </body>
 </html>
