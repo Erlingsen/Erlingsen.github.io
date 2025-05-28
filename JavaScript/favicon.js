@@ -1,5 +1,5 @@
-const lightFavicon = 'Bilder/Monogramhvit.png';
-const darkFavicon = 'Bilder/Monogramsvart.png';
+const lightFavicon = '../Bilder/Monogramhvit.png';
+const darkFavicon = '../Bilder/Monogramsvart.png';
 
 // Funksjon som oppdaterer href-attributtet til favicon-elementet med et nytt bilde
 function setFavicon(href) {
