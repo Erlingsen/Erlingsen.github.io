@@ -5,10 +5,10 @@ const overlayImage = overlay.querySelector('img');
 for (let i = 0; i < thumbs.length; i++) {
   thumbs[i].addEventListener('click', function () {
     overlayImage.src = this.src;
-    overlayImage.id = this.id || "";  // Copy the clicked image's ID if any
+    overlayImage.id = this.id || "";  // Kopier bilde ID hvis tilgjengelig
     overlay.style.display = 'flex';
 
-    // Request fullscreen
+    // Request fullskjerm
     if (overlay.requestFullscreen) {
       overlay.requestFullscreen();
     } else if (overlay.webkitRequestFullscreen) {
@@ -23,7 +23,7 @@ overlay.addEventListener('click', function (e) {
   if (e.target === overlay) {
     overlay.style.display = 'none';
     overlayImage.src = '';
-    overlayImage.id = '';  // Clear ID on close
+    overlayImage.id = '';  // Fjern bilde ID når overlay lukkes
 
     // Exit fullscreen
     if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {

@@ -2,7 +2,6 @@ async function getQuote() {
     let quote;
     let author;
 
-    // Map of authors to image URLs
     const authorImages = {
         "Walter White": "Bilder\walterandjesse.png",
         "Jesse Pinkman": "Bilder\walterandjesse.png",
@@ -21,8 +20,6 @@ async function getQuote() {
         "Stephen King": "https://tse3.mm.bing.net/th/id/OIP.2xgXsq5h280rVD7msZ0tmQHaEK?cb=iwc2&rs=1&pid=ImgDetMain",
         "Maria Schrader": "https://th.bing.com/th/id/R.e5979abc2f7f15599ab2dee2feda4b4d?rik=uLOvZXw6%2bF9BlA&riu=http%3a%2f%2fimg2.wikia.nocookie.net%2f__cb20131015160538%2fbreakingbad%2fimages%2fa%2fad%2f5x14_-_marie.png&ehk=8%2f0lmMi%2beCefnnZp3ad9dmdyvj0kr1Y%2bLYZQlQHQ4w0%3d&risl=&pid=ImgRaw&r=0",
         
-
-        // Add more authors and images as needed
     };
 
     const data = await fetch("https://api.breakingbadquotes.xyz/v1/quotes");
@@ -39,8 +36,7 @@ async function getQuote() {
         document.getElementById("authortext").innerText = "-" + author;
         console.log(author);    
 
-        // Set image based on author
-        const imgSrc = authorImages[author] || "default.jpg"; // Fallback image
+        // Setter bilder basert på author
         document.getElementById("imagesource").src = imgSrc;
     }
 }
