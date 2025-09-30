@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lightshot-like Screenshot → Firebase</title>
+  <style>
+    :root{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+    body{margin:0;padding:16px;box-sizing:border-box;background:#f5f7fa;color:#111}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    button{padding:8px 12px;border-radius:8px;border:1px solid #ccc;background:white;cursor:pointer}
+    #captureCanvas{border:1px solid #bbb;max-width:100%;display:block}
+    #overlay{position:relative;display:inline-block}
+    #selection{position:absolute;border:2px dashed rgba(0,120,212,0.9);background:rgba(0,120,212,0.08);pointer-events:none}
+    #controls{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+    #gallery{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .card{background:white;padding:8px;border-radius:8px;border:1px solid #e0e4ea;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+    .thumb{width:100%;height:120px;object-fit:cover;border-radius:6px;border:1px solid #eee}
+    .meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:6px}
+    input[type=text]{padding:8px;border-radius:8px;border:1px solid #ccc}
+    .small{font-size:12px;color:#666}
+    .danger{color:#b00020;border-color:#f8d7da}
+    @media (max-width:560px){header{flex-direction:column;align-items:stretch}}
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Lightshot-like Screenshot → Firebase</h2>
+    <div style="margin-left:auto" class="small">Single-file demo — host with GitHub Pages (HTTPS required).</div>
+  </header>
+
+  <div id="app">
+    <div>
+      <button id="btnCapture">Capture screen</button>
+      <button id="btnClear">Clear capture</button>
+      <div style="display:inline-block;margin-left:8px;vertical-align:middle">
+        <input id="search" type="text" placeholder="Search by name" />
+      </div>
+    </div>
+
+    <div id="overlay" style="margin-top:12px">
+      <canvas id="captureCanvas"></canvas>
+      <div id="selection" style="display:none"></div>
+    </div>
+
+    <div id="controls">
+      <button id="btnCropSave" disabled>Crop & Save</button>
+      <button id="btnDownloadFull" disabled>Download full</button>
+      <div class="small" id="hint">Tip: Click "Capture screen", allow screen share, draw a rectangle on the image, then "Crop & Save".</div>
+    </div>
+
+    <section id="gallery"></section>
+  </div>
+
+  <script type="module">
+  // Single-file app: capture, crop, upload to Firebase Storage + metadata to Firestore, gallery with download/copy/delete/search.
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.3/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/9.6.3/firebase-firestore.js";
+  import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+  } from "https://www.gstatic.com/firebasejs/9.6.3/firebase-storage.js";
+
+  // --- Firebase config (replace with your config if needed) ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyDI3REJ-5ybQ7liNI9JCKXA2yopIRAf0w8",
+    authDomain: "elevliste-aaa0a.firebaseapp.com",
+    projectId: "elevliste-aaa0a",
+    storageBucket: "elevliste-aaa0a.appspot.com",
+    messagingSenderId: "613187117085",
+    appId: "1:613187117085:web:6312b1076e45b9f55de6f4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  // DOM refs
+  const btnCapture = document.getElementById('btnCapture');
+  const btnClear = document.getElementById('btnClear');
+  const canvas = document.getElementById('captureCanvas');
+  const overlay = document.getElementById('overlay');
+  const selectionDiv = document.getElementById('selection');
+  const btnCropSave = document.getElementById('btnCropSave');
+  const btnDownloadFull = document.getElementById('btnDownloadFull');
+  const gallery = document.getElementById('gallery');
+  const searchInput = document.getElementById('search');
+
+  let ctx;
+  let originalImage = null; // Image object holding captured frame
+  let scaleFactor = 1; // convert canvas coords -> real image coords
+
+  // Selection state
+  let selecting = false;
+  let selStart = {x:0,y:0};
+  let selCurrent = {x:0,y:0};
+
+  function createCanvasForImage(img){
+    const maxWidth = Math.min(window.innerWidth - 40, img.width);
+    const ratio = maxWidth / img.width;
+    canvas.width = Math.round(img.width * ratio);
+    canvas.height = Math.round(img.height * ratio);
+    scaleFactor = img.width / canvas.width;
+    ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    overlay.style.width = canvas.width + 'px';
+    overlay.style.height = canvas.height + 'px';
+    selectionDiv.style.display = 'none';
+    btnCropSave.disabled = false;
+    btnDownloadFull.disabled = false;
+  }
+
+  // SAFE screen capture: uses ImageCapture when available, otherwise falls back to drawing from a video element.
+  async function captureScreenFrame(){
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      // We'll either draw from ImageCapture.grabFrame() or from a video element.
+      const tmp = document.createElement('canvas');
+      const tctx = tmp.getContext('2d');
+
+      if (typeof ImageCapture !== 'undefined') {
+        // Use ImageCapture if available (Chromium browsers)
+        try {
+          const track = stream.getVideoTracks()[0];
+          const ic = new ImageCapture(track);
+          const bitmap = await ic.grabFrame(); // ImageBitmap
+          tmp.width = bitmap.width;
+          tmp.height = bitmap.height;
+          tctx.drawImage(bitmap, 0, 0);
+          if (bitmap.close) bitmap.close();
+        } catch (err) {
+          // If grabFrame fails, fallback to video approach
+          await drawFrameFromVideoStream(stream, tmp, tctx);
+        }
+      } else {
+        // ImageCapture not available — use video fallback
+        await drawFrameFromVideoStream(stream, tmp, tctx);
+      }
+
+      // stop capture tracks
+      stream.getTracks().forEach(t => t.stop());
+
+      const img = new Image();
+      img.src = tmp.toDataURL('image/png');
+      await new Promise((r)=>{ img.onload = r; });
+
+      originalImage = img;
+      createCanvasForImage(img);
+    } catch (err) {
+      console.error('Screen capture failed', err);
+      alert('Screen capture failed: ' + (err && err.message ? err.message : err));
+    }
+  }
+
+  // helper fallback: draw from a hidden video element
+  async function drawFrameFromVideoStream(stream, tmp, tctx){
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.playsInline = true;
+      // try to play (may reject due to autoplay policy; but getDisplayMedia usually allows)
+      const playPromise = video.play();
+      // Wait for metadata
+      video.onloadedmetadata = () => {
+        tmp.width = video.videoWidth || tmp.width || 1280;
+        tmp.height = video.videoHeight || tmp.height || 720;
+        // slight delay to ensure a frame is available
+        setTimeout(() => {
+          try {
+            tctx.drawImage(video, 0, 0, tmp.width, tmp.height);
+          } catch (e) {
+            console.warn('drawImage from video failed', e);
+          }
+          video.pause();
+          if (video.srcObject) video.srcObject = null;
+          resolve();
+        }, 120);
+      };
+      // in case loadedmetadata doesn't fire quickly, also guard with playPromise resolution
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.catch(()=>{/* ignore autoplay warnings */});
+      }
+    });
+  }
+
+  function clearCanvas(){
+    originalImage = null;
+    ctx = null;
+    canvas.width = 0; canvas.height = 0;
+    selectionDiv.style.display = 'none';
+    btnCropSave.disabled = true;
+    btnDownloadFull.disabled = true;
+  }
+
+  // Selection interactions
+  overlay.addEventListener('mousedown', (ev)=>{
+    if(!originalImage) return;
+    selecting = true;
+    const rect = overlay.getBoundingClientRect();
+    selStart.x = ev.clientX - rect.left;
+    selStart.y = ev.clientY - rect.top;
+    selCurrent = {...selStart};
+    updateSelectionDiv();
+    selectionDiv.style.display = 'block';
+  });
+
+  window.addEventListener('mousemove', (ev)=>{
+    if(!selecting) return;
+    const rect = overlay.getBoundingClientRect();
+    selCurrent.x = Math.max(0, Math.min(ev.clientX - rect.left, canvas.width));
+    selCurrent.y = Math.max(0, Math.min(ev.clientY - rect.top, canvas.height));
+    updateSelectionDiv();
+  });
+
+  window.addEventListener('mouseup', ()=>{
+    if(selecting){
+      selecting = false;
+    }
+  });
+
+  function updateSelectionDiv(){
+    const x = Math.min(selStart.x, selCurrent.x);
+    const y = Math.min(selStart.y, selCurrent.y);
+    const w = Math.abs(selStart.x - selCurrent.x);
+    const h = Math.abs(selStart.y - selCurrent.y);
+    selectionDiv.style.left = x + 'px';
+    selectionDiv.style.top = y + 'px';
+    selectionDiv.style.width = w + 'px';
+    selectionDiv.style.height = h + 'px';
+    selectionDiv.style.display = (w>3 && h>3) ? 'block' : 'none';
+  }
+
+  function getCroppedBlob(){
+    return new Promise((resolve)=>{
+      if(!originalImage) return resolve(null);
+      const x = Math.min(selStart.x, selCurrent.x);
+      const y = Math.min(selStart.y, selCurrent.y);
+      const w = Math.abs(selStart.x - selCurrent.x);
+      const h = Math.abs(selStart.y - selCurrent.y);
+      const sx = Math.round((w>3 && h>3 ? x : 0) * scaleFactor);
+      const sy = Math.round((w>3 && h>3 ? y : 0) * scaleFactor);
+      const sw = Math.round((w>3 && h>3 ? w : canvas.width) * scaleFactor);
+      const sh = Math.round((w>3 && h>3 ? h : canvas.height) * scaleFactor);
+
+      const out = document.createElement('canvas');
+      out.width = sw; out.height = sh;
+      const octx = out.getContext('2d');
+      octx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, sw, sh);
+      out.toBlob((blob)=>resolve(blob),'image/png');
+    });
+  }
+
+  function sanitizeFileName(name){
+    return (name || '').replace(/[^a-z0-9-_\.]/gi,'_').substr(0,200) || 'screenshot';
+  }
+
+  async function uploadCropped(name){
+    const blob = await getCroppedBlob();
+    if(!blob) return null;
+    const safe = sanitizeFileName(name || 'screenshot');
+    const filename = `${Date.now()}_${safe}.png`;
+    const sRef = storageRef(storage, `screenshots/${filename}`);
+    await uploadBytes(sRef, blob);
+    const url = await getDownloadURL(sRef);
+    const docRef = await addDoc(collection(db, 'screenshots'), {
+      name: name || 'Untitled',
+      filename,
+      path: `screenshots/${filename}`,
+      url,
+      createdAt: serverTimestamp()
+    });
+    return {docId: docRef.id, url, filename};
+  }
+
+  // Gallery
+  async function loadGallery(){
+    gallery.innerHTML = '<div class="small">Loading…</div>';
+    try {
+      const q = query(collection(db,'screenshots'), orderBy('createdAt','desc'));
+      const snap = await getDocs(q);
+      const items = [];
+      snap.forEach(d=>{
+        const data = d.data();
+        items.push({id:d.id, ...data});
+      });
+      renderGallery(items);
+    } catch (e) {
+      console.error('Failed loading gallery', e);
+      gallery.innerHTML = '<div class="small">Failed loading gallery (check Firebase rules / console)</div>';
+    }
+  }
+
+  function renderGallery(items){
+    const filter = (searchInput.value || '').toLowerCase().trim();
+    const filtered = items.filter(it => (it.name || '').toLowerCase().includes(filter));
+    if(filtered.length===0){
+      gallery.innerHTML = '<div class="small">No screenshots found</div>';
+      return;
+    }
+    gallery.innerHTML = '';
+    filtered.forEach(it=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img class="thumb" src="${it.url}" alt="${escapeHtml(it.name)}" />
+        <div class="meta">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(it.name)}</div>
+            <div class="small">${it.filename || ''}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-left:8px">
+            <a class="small" href="${it.url}" download="${it.filename || 'screenshot.png'}">Download</a>
+            <button class="small copyBtn">Copy link</button>
+            <button class="small deleteBtn danger">Delete</button>
+          </div>
+        </div>
+      `;
+      card.querySelector('.copyBtn').addEventListener('click', ()=>{
+        navigator.clipboard.writeText(it.url).then(()=>{ alert('Link copied to clipboard'); });
+      });
+      card.querySelector('.deleteBtn').addEventListener('click', async ()=>{
+        if(!confirm('Delete this screenshot?')) return;
+        try{
+          await deleteObject(storageRef(storage, it.path));
+        }catch(e){
+          console.warn('Failed deleting storage object (may already be gone)', e);
+        }
+        try{
+          await deleteDoc(doc(db,'screenshots',it.id));
+        }catch(e){
+          console.warn('Failed deleting firestore doc',e);
+        }
+        loadGallery();
+      });
+      gallery.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s){
+    return (s+'').replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];});
+  }
+
+  // Events
+  btnCapture.addEventListener('click', ()=>captureScreenFrame());
+  btnClear.addEventListener('click', ()=>clearCanvas());
+
+  btnCropSave.addEventListener('click', async ()=>{
+    const defaultName = 'screenshot_' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+    const name = prompt('Give this screenshot a name:', defaultName);
+    if(name===null) return;
+    btnCropSave.disabled = true;
+    try{
+      const result = await uploadCropped(name);
+      if(result) alert('Saved — doc id: ' + result.docId);
+      await loadGallery();
+    }catch(e){
+      console.error('Upload failed',e);
+      alert('Upload failed: '+(e.message||e));
+    }finally{ btnCropSave.disabled = false; }
+  });
+
+  btnDownloadFull.addEventListener('click', ()=>{
+    if(!canvas || !originalImage) return;
+    canvas.toBlob((blob)=>{
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'capture.png';
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+  });
+
+  searchInput.addEventListener('input', ()=>loadGallery());
+
+  // Initial load
+  (async function init(){
+    await loadGallery();
+  })();
+
+  </script>
+</body>
+</html>
